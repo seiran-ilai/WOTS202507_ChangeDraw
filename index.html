@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>202507煙硝絮語交換繪</title>
+    <title>202507煙硝絮語交換繪 PLURK@ilai_sei</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
             background-color: #f5f5f5;
-            padding-top: 280px;
+            padding-top: 340px;
         }
         
         .container {
@@ -40,10 +40,12 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
+            flex-wrap: wrap;
         }
         
         .title-left {
             flex: 1;
+            min-width: 200px;
         }
         
         .main-title {
@@ -70,11 +72,12 @@
             align-items: center;
             gap: 5px;
             font-size: 16px;
+            margin-top: 10px;
         }
         
         .user-input input {
             border: 1px solid #ccc;
-            padding: 5px 8px;
+            padding: 8px 12px;
             border-radius: 4px;
             font-size: 14px;
             width: 120px;
@@ -113,10 +116,16 @@
             cursor: grab;
             border-radius: 4px;
             user-select: none;
+            touch-action: none;
         }
         
         .artist-card:active {
             cursor: grabbing;
+        }
+        
+        .artist-card.selected {
+            background-color: #007bff;
+            transform: scale(1.1);
         }
         
         .header {
@@ -124,8 +133,9 @@
             margin-bottom: 20px;
             font-size: 24px;
             font-weight: bold;
-            margin-left: 155px;
             gap: 20px;
+            width: 100%;
+            justify-content: center;
         }
         
         .header-item {
@@ -138,7 +148,8 @@
             gap: 20px;
             margin-bottom: 20px;
             align-items: center;
-            margin-left: 20px;
+            width: 100%;
+            justify-content: center;
         }
         
         .artworks-group {
@@ -169,14 +180,11 @@
             background-repeat: no-repeat;
             position: relative;
             border: 1px solid #999;
+            cursor: pointer;
         }
         
         .artwork:hover {
             opacity: 0.8;
-        }
-        
-        .artwork.drop-zone {
-            /* 移除藍色虛線框效果 */
         }
         
         .artwork-overlay {
@@ -225,6 +233,135 @@
         .export-btn:hover {
             background-color: #0056b3;
         }
+
+        /* 平板響應式設計 */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 15px;
+                padding-top: 380px;
+            }
+            
+            .fixed-header {
+                padding: 15px;
+            }
+            
+            .main-title {
+                font-size: 24px;
+            }
+            
+            .header {
+                font-size: 20px;
+            }
+            
+            .header-item {
+                width: 100px;
+            }
+            
+            .artwork {
+                width: 100px;
+                height: 140px;
+            }
+            
+            .artworks-group {
+                gap: 15px;
+            }
+            
+            .row {
+                gap: 15px;
+            }
+            
+            .label {
+                width: 100px;
+                font-size: 12px;
+                margin-right: 10px;
+            }
+            
+            .artist-card {
+                width: 70px;
+                height: 35px;
+                font-size: 12px;
+            }
+        }
+
+        /* 手機響應式設計 */
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 10px;
+                padding-top: 420px;
+            }
+            
+            .fixed-header {
+                padding: 10px;
+            }
+            
+            .title {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .title-left {
+                text-align: center;
+            }
+            
+            .main-title {
+                font-size: 20px;
+            }
+            
+            .user-input {
+                justify-content: center;
+                margin-top: 0;
+            }
+            
+            .artists-panel {
+                gap: 8px;
+                margin-bottom: 20px;
+            }
+            
+            .artist-card {
+                width: 60px;
+                height: 32px;
+                font-size: 11px;
+            }
+            
+            .header {
+                font-size: 18px;
+                gap: 15px;
+            }
+            
+            .header-item {
+                width: 80px;
+            }
+            
+            .row {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                margin-bottom: 30px;
+            }
+            
+            .label {
+                width: auto;
+                text-align: center;
+                margin-right: 0;
+                font-size: 14px;
+                margin-bottom: 10px;
+            }
+            
+            .artworks-group {
+                gap: 10px;
+            }
+            
+            .artwork {
+                width: 85px;
+                height: 120px;
+                font-size: 18px;
+            }
+            
+            .artwork-overlay {
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -234,7 +371,7 @@
             <div class="title">
                 <div class="title-left">
                     <h1 class="main-title">煙硝絮語2025/07交換繪 <span id="export-user-name"></span></h1>
-                    <p class="instruction" id="instruction-text">[拖曳繪師卡片到圖片區填寫答案]</p>
+                    <p class="instruction" id="instruction-text">[點選繪師卡片後再點擊圖片填答]</p>
                 </div>
                 <div class="user-input">
                     <label>填寫人：</label>
@@ -244,11 +381,11 @@
             
             <!-- 繪師選擇區 -->
             <div class="artists-panel">
-                <div class="artist-card" draggable="true" ondragstart="startDrag('尹賴')">尹賴</div>
-                <div class="artist-card" draggable="true" ondragstart="startDrag('黑時')">黑時</div>
-                <div class="artist-card" draggable="true" ondragstart="startDrag('奇諾')">奇諾</div>
-                <div class="artist-card" draggable="true" ondragstart="startDrag('嚴雩')">嚴雩</div>
-                <div class="artist-card" draggable="true" ondragstart="startDrag('秒')">秒</div>
+                <div class="artist-card" onclick="selectArtist('尹賴', this)" ondragstart="startDrag('尹賴')" draggable="true">尹賴</div>
+                <div class="artist-card" onclick="selectArtist('黑時', this)" ondragstart="startDrag('黑時')" draggable="true">黑時</div>
+                <div class="artist-card" onclick="selectArtist('奇諾', this)" ondragstart="startDrag('奇諾')" draggable="true">奇諾</div>
+                <div class="artist-card" onclick="selectArtist('嚴雩', this)" ondragstart="startDrag('嚴雩')" draggable="true">嚴雩</div>
+                <div class="artist-card" onclick="selectArtist('秒', this)" ondragstart="startDrag('秒')" draggable="true">秒</div>
             </div>
             
             <!-- 草線彩標題 -->
@@ -269,14 +406,14 @@
                 <div class="row">
                     <div class="label">A 被通緝的報童范姜浩</div>
                     <div class="artworks-group">
-                        <div class="artwork" id="A1" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'A1')">
-                            <div class="artwork-overlay" onclick="removeAnswer('A1')"></div>
+                        <div class="artwork" id="A1" onclick="fillAnswer('A1')" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'A1')">
+                            <div class="artwork-overlay" onclick="removeAnswer('A1'); event.stopPropagation();"></div>
                         </div>
-                        <div class="artwork" id="A2" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'A2')">
-                            <div class="artwork-overlay" onclick="removeAnswer('A2')"></div>
+                        <div class="artwork" id="A2" onclick="fillAnswer('A2')" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'A2')">
+                            <div class="artwork-overlay" onclick="removeAnswer('A2'); event.stopPropagation();"></div>
                         </div>
-                        <div class="artwork" id="A3" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'A3')">
-                            <div class="artwork-overlay" onclick="removeAnswer('A3')"></div>
+                        <div class="artwork" id="A3" onclick="fillAnswer('A3')" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'A3')">
+                            <div class="artwork-overlay" onclick="removeAnswer('A3'); event.stopPropagation();"></div>
                         </div>
                     </div>
                 </div>
@@ -284,14 +421,14 @@
                 <div class="row">
                     <div class="label">B 大梁謙+小梁謙</div>
                     <div class="artworks-group">
-                        <div class="artwork" id="B1" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'B1')">
-                            <div class="artwork-overlay" onclick="removeAnswer('B1')"></div>
+                        <div class="artwork" id="B1" onclick="fillAnswer('B1')" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'B1')">
+                            <div class="artwork-overlay" onclick="removeAnswer('B1'); event.stopPropagation();"></div>
                         </div>
-                        <div class="artwork" id="B2" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'B2')">
-                            <div class="artwork-overlay" onclick="removeAnswer('B2')"></div>
+                        <div class="artwork" id="B2" onclick="fillAnswer('B2')" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'B2')">
+                            <div class="artwork-overlay" onclick="removeAnswer('B2'); event.stopPropagation();"></div>
                         </div>
-                        <div class="artwork" id="B3" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'B3')">
-                            <div class="artwork-overlay" onclick="removeAnswer('B3')"></div>
+                        <div class="artwork" id="B3" onclick="fillAnswer('B3')" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'B3')">
+                            <div class="artwork-overlay" onclick="removeAnswer('B3'); event.stopPropagation();"></div>
                         </div>
                     </div>
                 </div>
@@ -299,14 +436,14 @@
                 <div class="row">
                     <div class="label">C 曾經的紀旻萱與店長</div>
                     <div class="artworks-group">
-                        <div class="artwork" id="C1" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'C1')">
-                            <div class="artwork-overlay" onclick="removeAnswer('C1')"></div>
+                        <div class="artwork" id="C1" onclick="fillAnswer('C1')" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'C1')">
+                            <div class="artwork-overlay" onclick="removeAnswer('C1'); event.stopPropagation();"></div>
                         </div>
-                        <div class="artwork" id="C2" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'C2')">
-                            <div class="artwork-overlay" onclick="removeAnswer('C2')"></div>
+                        <div class="artwork" id="C2" onclick="fillAnswer('C2')" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'C2')">
+                            <div class="artwork-overlay" onclick="removeAnswer('C2'); event.stopPropagation();"></div>
                         </div>
-                        <div class="artwork" id="C3" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'C3')">
-                            <div class="artwork-overlay" onclick="removeAnswer('C3')"></div>
+                        <div class="artwork" id="C3" onclick="fillAnswer('C3')" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'C3')">
+                            <div class="artwork-overlay" onclick="removeAnswer('C3'); event.stopPropagation();"></div>
                         </div>
                     </div>
                 </div>
@@ -314,14 +451,14 @@
                 <div class="row">
                     <div class="label">D 范姜_獵人/遊俠</div>
                     <div class="artworks-group">
-                        <div class="artwork" id="D1" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'D1')">
-                            <div class="artwork-overlay" onclick="removeAnswer('D1')"></div>
+                        <div class="artwork" id="D1" onclick="fillAnswer('D1')" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'D1')">
+                            <div class="artwork-overlay" onclick="removeAnswer('D1'); event.stopPropagation();"></div>
                         </div>
-                        <div class="artwork" id="D2" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'D2')">
-                            <div class="artwork-overlay" onclick="removeAnswer('D2')"></div>
+                        <div class="artwork" id="D2" onclick="fillAnswer('D2')" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'D2')">
+                            <div class="artwork-overlay" onclick="removeAnswer('D2'); event.stopPropagation();"></div>
                         </div>
-                        <div class="artwork" id="D3" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'D3')">
-                            <div class="artwork-overlay" onclick="removeAnswer('D3')"></div>
+                        <div class="artwork" id="D3" onclick="fillAnswer('D3')" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'D3')">
+                            <div class="artwork-overlay" onclick="removeAnswer('D3'); event.stopPropagation();"></div>
                         </div>
                     </div>
                 </div>
@@ -329,12 +466,12 @@
                 <div class="row">
                     <div class="label">E Happy ever after</div>
                     <div class="artworks-group">
-                        <div class="artwork" id="E1" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'E1')">
-                            <div class="artwork-overlay" onclick="removeAnswer('E1')"></div>
+                        <div class="artwork" id="E1" onclick="fillAnswer('E1')" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'E1')">
+                            <div class="artwork-overlay" onclick="removeAnswer('E1'); event.stopPropagation();"></div>
                         </div>
                         <div class="artwork pass-item" id="E2">PASS</div>
-                        <div class="artwork" id="E3" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'E3')">
-                            <div class="artwork-overlay" onclick="removeAnswer('E3')"></div>
+                        <div class="artwork" id="E3" onclick="fillAnswer('E3')" ondragover="allowDrop(event)" ondrop="dropArtist(event, 'E3')">
+                            <div class="artwork-overlay" onclick="removeAnswer('E3'); event.stopPropagation();"></div>
                         </div>
                     </div>
                 </div>
@@ -368,6 +505,7 @@
         };
         
         let draggedArtistName = '';
+        let selectedArtist = '';
         
         // 載入圖片 - 使用本地路徑
         function loadImages() {
@@ -383,7 +521,34 @@
             }
         }
         
-        // 開始拖拽
+        // 選擇繪師（觸控版本）
+        function selectArtist(artistName, element) {
+            // 移除所有選中狀態
+            document.querySelectorAll('.artist-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // 設定選中狀態
+            element.classList.add('selected');
+            selectedArtist = artistName;
+        }
+        
+        // 填入答案（觸控版本）
+        function fillAnswer(slotId) {
+            if (selectedArtist) {
+                const overlay = document.getElementById(slotId).querySelector('.artwork-overlay');
+                overlay.style.display = 'flex';
+                overlay.textContent = selectedArtist;
+                
+                // 清除選中狀態
+                document.querySelectorAll('.artist-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                selectedArtist = '';
+            }
+        }
+        
+        // 開始拖拽（桌面版本）
         function startDrag(artistName) {
             draggedArtistName = artistName;
         }
@@ -391,13 +556,11 @@
         // 允許放置
         function allowDrop(event) {
             event.preventDefault();
-            // 移除視覺效果
         }
         
-        // 放置繪師
+        // 放置繪師（桌面版本）
         function dropArtist(event, slotId) {
             event.preventDefault();
-            // 移除任何視覺效果
             
             if (draggedArtistName) {
                 const overlay = document.getElementById(slotId).querySelector('.artwork-overlay');
@@ -413,12 +576,7 @@
             overlay.textContent = '';
         }
         
-        // 移除拖拽樣式
-        document.addEventListener('dragleave', function(event) {
-            // 移除任何拖拽相關的視覺效果
-        });
-        
-        // 輸出圖片功能 - 簡化版本
+        // 輸出圖片功能
         function exportToImage() {
             const userName = document.getElementById('userName').value || '匿名';
             const userInput = document.querySelector('.user-input');
