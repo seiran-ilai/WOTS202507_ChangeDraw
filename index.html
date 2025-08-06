@@ -158,8 +158,7 @@
         }
         
         .artwork.drop-zone {
-            border: 2px dashed #007bff;
-            background-color: #e7f3ff;
+            /* 移除藍色虛線框效果 */
         }
         
         .artwork-overlay {
@@ -367,17 +366,16 @@
         // 允許放置
         function allowDrop(event) {
             event.preventDefault();
-            event.target.closest('.artwork').classList.add('drop-zone');
+            // 移除視覺效果
         }
         
         // 放置繪師
         function dropArtist(event, slotId) {
             event.preventDefault();
-            const artwork = document.getElementById(slotId);
-            artwork.classList.remove('drop-zone');
+            // 移除任何視覺效果
             
             if (draggedArtistName) {
-                const overlay = artwork.querySelector('.artwork-overlay');
+                const overlay = document.getElementById(slotId).querySelector('.artwork-overlay');
                 overlay.style.display = 'flex';
                 overlay.textContent = draggedArtistName;
             }
@@ -392,9 +390,7 @@
         
         // 移除拖拽樣式
         document.addEventListener('dragleave', function(event) {
-            if (event.target.classList.contains('artwork')) {
-                event.target.classList.remove('drop-zone');
-            }
+            // 移除任何拖拽相關的視覺效果
         });
         
         // 輸出圖片功能 - 簡化版本
